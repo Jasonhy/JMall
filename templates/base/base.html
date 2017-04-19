@@ -1,0 +1,80 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+{% block top %}
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">欢迎来到环球购</div>
+        <div class="fr">
+            <div class="login_info fl">
+                欢迎您: <em>Jason</em>
+            </div>
+            <div class="login_btn fl">
+                <a href="#">登录</a>
+                <span>|</span>
+                <a href="#">注册</a>
+            </div>
+            <div class="login_info fl" id="login_btn_out">
+                <span>|</span>
+                <a href="#">退出</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="#">用户中心</a>
+                <span>|</span>
+                <a href="#">我的购物车</a>
+                <span>|</span>
+                <a href="#">我的订单</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
+    <script>
+        $(function () {
+            if ($('.login_info em').html() != ''){
+                $('.login_info').show();
+                $('.login_btn').hide();
+                $('#login_btn_out').show();
+            }else {
+                $('.login_info').hide();
+                $('.login_btn').show();
+                $('#login_btn_out').hide();
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block class %}
+    <div class="footer"></div>
+{% endblock %}
+
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">最新活动</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+
+    <p>CopyRight © 2017 广州环球购电子商务有限公司 All Rights Reserved</p>
+    <p>电话：020-4545445    京ICP备686866888号</p>
+</body>
+</html>
