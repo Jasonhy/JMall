@@ -1,0 +1,164 @@
+{% extends 'base/base_index.html' %}
+{% load static from staticfiles %}
+{% block title %}
+    全球购 - 商品详情
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/detail.js' %}"></script>
+    <script type="text/javascript" src="/static/tiny_mce/tiny_mce.js"></script>
+    <script type="text/javascript">
+        tinyMCE.init({
+            'mode':'textareas',
+            'theme':'advanced',
+            'width':1000,
+            'height':300
+        })
+    </script>
+
+    <div class="breadcrumb">
+        <a href="#">全部分类</a>
+        <span>|</span>
+        <a href="#">{{ good_sort.sort_name }}</a>
+        <span>|</span>
+        <a href="#">商品详情</a>
+    </div>
+    <div class="goods_detail_con clearfix">
+        <div class="goods_detail_pic fl"><img src="/{{ good.img_path }}"></div>
+        <div class="goods_detail_list fr">
+            <h3>{{ good.goods_name }}</h3>
+            <p>{{ good.goods_desc }}</p>
+            <div class="price_bar">
+                <span class="show_price">¥<em>{{ good.goods_price }}</em></span>
+                <span class="show_unit">单 位: 500g</span>
+            </div>
+            <div class="goods_nums clearfix">
+                <div class="num_name fl">数量: </div>
+                <div class="num_add fl">
+                    <input type="text" class="num_show fl" value="1">
+                    <a href="javascript:;" class="add fr">+</a>
+                    <a href="javascript:;" class="minus fr">-</a>
+                </div>
+            </div>
+            <div class="total">总价: <em>{{ good.goods_price }} 元</em></div>
+            <div class="operate_btn">
+                <a href="#" class="buy_btn">立即购买</a>
+                <a href="javascript:;" class="add_card" id="add_cart" value="{{ good.id }}">加入购物车</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main_wrap clearfix">
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for new_goods in new_goods_list %}
+                        <li>
+                            <a href="/detail/?goods_id={{ new_goods.id }}"><img src="/{{ new_goods.img_path }}"></a>
+                            <h4><a href="#">{{ new_goods.goods_name }}</a> </h4>
+                            <div class="price">¥ {{ new_goods.goods_price }}</div>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+        <div class="r_wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active introd">商品介绍</li>
+                <li class="comment">商品评论</li>
+            </ul>
+            <div class="tab_content">
+                <dl>
+                    <dt></dt>
+                    <dd class="detail">{{ good.goods_detail|safe }}</dd>
+                    <div class="formtable">
+                        <form method="post">
+                            {% for comm in goods_comment %}
+                                <p>{{ comm.username }} {{ comm.comment_date }}</p>
+                                <dd>{{ comm.comment|safe }}</dd>
+                                <hr name="goods_id" value="{{ good.id }}">
+                            {% endfor %}
+                            <textarea class="com" name="comment"></textarea>
+                            <input type="submit" value="提交评论">
+                        </form>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="add_jump"></div>
+    <script type="text/javascript">
+        $(function () {
+            $('.detail_tab .comment').click(function () {
+                $(this).addClass('active').siblings('li').removeClass('active');
+                $('.tab_content .formtable form').show();
+                $('.tab_content .detail').hide();
+            });
+
+            $('.detail_tab .introd').click(function () {
+                $(this).addClass('active').siblings('li').removeClass('active');
+                $('.tab_content .formtable form').hide();
+                $('.tab_content .detail').show();
+            });
+        })
+    </script>
+
+    <script>
+        (function ($) {
+            $.extend({
+                tipsBox:function (options) {
+                    options = $.extend({
+                        onj:null,
+                        str:"+1",
+                        start_size:"30px",
+                        end_size:"60px",
+                        interval:1000,
+                        color:"#ff5400",
+                        callback:function () {
+
+                        }
+                    },options);
+                    $("body").append("<span class='num'>" + options.str + "</span>")
+                    var box = $(".num");
+                    var left = options.obj.offset().left + options.obj.width/2 + 190;
+                    var top = options.obj.offset().top - options.obj.height - 200;
+                    box.css({
+                        "position":"absolute",
+                        "left":left + "px",
+                        "top":top + "px",
+                        "z-index":9999,
+                        "font-size":options.start_size,
+                        "line-height":options.end_size,
+                        "color":options.color
+                    });
+                    box.animate({
+                        "font-size":options.end_size,
+                        "opacity":"0",
+                        "top":top - parseInt(options.end_size) + "px"
+                    },options.interval,function () {
+                        box.remove();
+                        options.callback();
+                    });
+                }
+            });
+        })(jQuery);
+    </script>
+
+    <script>
+        $(function () {
+            $('.add_card').click(function () {
+                $.tipsBox({
+                    obj:$(this),
+                    str:"+1",
+                    callback:function () {
+
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}

@@ -3,3 +3,76 @@
 {% block title %}
     环球购首页
 {% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/slide.js' %}"></script>
+
+    <div class="navbar_con">
+        <div class="navbar">
+            <h1 class="fl">全部商品分类</h1>
+            <ul class="navlist fl">
+                <li><a href="#">首页</a></li>
+                <li class="internal">|</li>
+                <li><a href="#">手机商城</a></li>
+                <li class="internal">|</li>
+                <li><a href="#">抽奖</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="center_con clearfix">
+        <ul class="subnav fl">
+            {% for temp in message %}
+                <li><a href="#model{{ temp.sort.id }}" class="{{ temp.sort.sort_class }}">{{ temp.sort.sort_name }}</a></li>
+            {% endfor %}
+
+        </ul>
+        <div class="slide fl">
+            <ul class="slide_pics">
+                <li><img src="{% static 'images/slide1.jpg' %}" alt="活动促销"></li>
+                <li><img src="{% static 'images/slide2.jpg' %}" alt="活动促销"></li>
+                <li><img src="{% static 'images/slide3.jpg' %}" alt="活动促销"></li>
+                <li><img src="{% static 'images/slide4.jpg' %}" alt="活动促销"></li>
+                <li><img src="{% static 'images/slide5.jpg' %}" alt="活动促销"></li>
+            </ul>
+            <div class="prev"></div>
+            <div class="next"></div>
+            <div class="points"></div>
+        </div>
+        <div class="adv fl">
+            <a href="#" style="width: 240px; height: 135px"><img src="{% static 'images/adv1.jpg' %}"></a>
+            <a href="#" style="width: 240px; height: 135px"><img src="{% static 'images/adv2.jpg' %}"></a>
+        </div>
+    </div>
+
+    {% for item in message %}
+        <div class="list_model">
+        <div class="list_title clearfix">
+            <h3 class="fl" id="model{{ item.sort.id }}">{{ item.sort.sort_name }}</h3>
+            <div class="subtitle fl">
+                <span>|</span>
+                {% for good_other in item.good_other_list %}
+                    <a href="#">{{ good_other.goods_name }}</a>
+                {% endfor %}
+
+            </div>
+            <a class="goods_more fr" href="#">查看更多</a>
+        </div>
+        <div class="goods_con clearfix">
+            <div class="goods_banner fl"><img src="/{{ item.sort.sort_pic }}"></div>
+            <ul class="goods_list fl">
+                {% for good_msg in item.good_msg_list %}
+                     <li>
+                        <h4><a href="/detail/?goods_id={{ good_msg.id }}">{{ good_msg.goods_name }}</a></h4>
+                        <a href="/detail/?goods_id={{ good_msg.id }}"><img src="/{{ good_msg.img_path }}"></a>
+                        <div class="price">¥ {{ good_msg.goods_price }}</div>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+
+
+{% endblock %}

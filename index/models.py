@@ -1,5 +1,6 @@
 from django.db import models
 from tinymce.models import HTMLField
+import django.utils.timezone as timezone
 
 
 # 用户表
@@ -7,7 +8,7 @@ class UserInfo(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=20)
     email = models.EmailField(max_length=30)
-    phone = models.IntegerField(max_length=15)
+    phone = models.CharField(max_length=15)
     addr = models.CharField(max_length=50,null=True,blank=True)
     reg_date = models.DateTimeField()
     is_delete = models.BooleanField(default=False)
@@ -43,7 +44,7 @@ class AddrInfo(models.Model):
     address = models.CharField(max_length=20)
     detail_addr = models.CharField(max_length=30)
     post_code = models.CharField(max_length=10,null=True,blank=True)
-    phone = models.IntegerField(max_length=15)
+    phone = models.CharField(max_length=15)
     is_delete = models.BooleanField(default=False)
     # 默认地址
     default_addr = models.BooleanField(default=False)
@@ -85,6 +86,7 @@ class Goods(models.Model):
 
     # 一个分类有多个商品
     goods_sort = models.ForeignKey('GoodSort')
+    pub_date = models.DateTimeField(default=timezone.now)
     extra = models.CharField(max_length=20,null=True,blank=True) #预留
 
     class Meta:

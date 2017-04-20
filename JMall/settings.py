@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tinymce',
     'index',
+    'detail',
+    'usercenter',
+    'register2login',
 ]
 
 MIDDLEWARE = [

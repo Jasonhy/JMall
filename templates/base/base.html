@@ -11,15 +11,15 @@
 {% block top %}
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到环球购</div>
+        <div class="welcome fl">欢迎来到全球购</div>
         <div class="fr">
             <div class="login_info fl">
-                欢迎您: <em>Jason</em>
+                欢迎您: <em>{{ user.username }}</em>
             </div>
             <div class="login_btn fl">
-                <a href="#">登录</a>
+                <a href="{% url 'register2login:login' %}">登录</a>
                 <span>|</span>
-                <a href="#">注册</a>
+                <a href="{% url 'register2login:register' %}">注册</a>
             </div>
             <div class="login_info fl" id="login_btn_out">
                 <span>|</span>
@@ -74,7 +74,10 @@
         <a href="#">友情链接</a>
     </div>
 
-    <p>CopyRight © 2017 广州环球购电子商务有限公司 All Rights Reserved</p>
-    <p>电话：020-4545445    京ICP备686866888号</p>
+    <div class="company_info">
+         <p>CopyRight © 2017 广州全球购电子商务有限公司 All Rights Reserved</p>
+         <p>电话：020-4545445    京ICP备686866888号</p>
+    </div>
+
 </body>
 </html>

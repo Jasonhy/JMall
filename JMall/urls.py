@@ -19,5 +19,8 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^', include('index.urls')),
+    url(r'^', include('index.urls',namespace='index')),
+    url(r'^', include('detail.urls',namespace='detail')),
+    # url(r'^', include('usercenter.urls',namespace='usercenter')),
+    url(r'^', include('register2login.urls',namespace='register2login')),
 ]
