@@ -6,4 +6,6 @@ admin.site.register(models.AreaInfo)
 admin.site.register(models.AddrInfo)
 admin.site.register(models.GoodSort)
 admin.site.register(models.Goods)
+admin.site.register(models.RecentSee)
+
 

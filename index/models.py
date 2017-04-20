@@ -6,7 +6,7 @@ import django.utils.timezone as timezone
 # 用户表
 class UserInfo(models.Model):
     username = models.CharField(max_length=30)
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=40)
     email = models.EmailField(max_length=30)
     phone = models.CharField(max_length=15)
     addr = models.CharField(max_length=50,null=True,blank=True)
