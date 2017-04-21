@@ -17,7 +17,7 @@
         </div>
         <div class="guest_cart fr">
             <i id="end"></i>
-            <a href="#" class="cart_name fl">我的购物车</a>
+            <a href="{% url 'cart:cart' %}" class="cart_name fl">我的购物车</a>
             <div class="goods_count fl" id="show_count">{{ number }}</div>
         </div>
     </div>
