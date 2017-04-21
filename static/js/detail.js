@@ -30,6 +30,20 @@ $(function () {
 
     $("#add_cart").click(function () {
         //加入购物车
+        $.ajax({
+            url:'/addcart/',
+            type:'POST',
+            dataType:'JSON',
+            data:{
+                'goods_name':$('.add_card').attr('value'),
+                'buy_count':$('.num_show').val()
+            }
+        }).done(function (data) {
+            console.log(":" + data.number);
+            $('#show_count').html(data.number);
+        }).fail(function () {
+            window.location.href='/login/';
+        });
     });
 
     $(".num_show").trigger("change");

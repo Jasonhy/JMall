@@ -26,7 +26,7 @@ class UserInfo(models.Model):
 # 省市区表
 class AreaInfo(models.Model):
     title = models.CharField(max_length=20)
-    parent = models.ForeignKey('self',null=True,blank=True)
+    parent = models.ForeignKey('self',null=True,blank=True,related_name='parent_ares_info')
 
     class Meta:
         db_table = 'areainfo'
@@ -52,7 +52,7 @@ class AddrInfo(models.Model):
     extra = models.CharField(max_length=20,null=True,blank=True)
 
     # 一个人可以填写多个地址 人与地址之间是一对多的关系
-    user = models.ForeignKey('UserInfo')
+    user = models.ForeignKey('UserInfo',related_name='user_addr_info')
 
     class Meta:
         db_table = 'addrinfo'
@@ -101,7 +101,7 @@ class GoodsComment(models.Model):
     username = models.CharField(max_length=30)
     comment_date = models.DateTimeField()
     comment = HTMLField()
-    goods = models.ForeignKey('Goods')
+    goods = models.ForeignKey('Goods',related_name='goods_comments')
 
     extra = models.CharField(max_length=20,null=True,blank=True) #预留
 
@@ -134,7 +134,8 @@ class Orders(models.Model):
     is_delete = models.BooleanField(default=False)
     order_time = models.DateTimeField()
     order_number = models.CharField(max_length=20,null=True,blank=True)
-    user_order = models.ForeignKey('UserInfo')
+    addr = models.IntegerField(null=True,blank=True)
+    user_order = models.ForeignKey('UserInfo',related_name='user_user_order')
 
     class Meta:
         db_table = 'orders'
@@ -148,8 +149,8 @@ class OrderDetail(models.Model):
     goods_name = models.CharField(max_length=30)
     goods_price = models.DecimalField(max_digits=7,decimal_places=2)
     buy_count = models.IntegerField()
-    order = models.ForeignKey('Orders')
-    goods = models.ForeignKey('Goods')
+    order = models.ForeignKey('Orders',related_name='order_detail')
+    goods = models.ForeignKey('Goods',related_name='goods_order')
 
     class Meta:
         db_table = 'orderdetail'
@@ -162,7 +163,7 @@ class OrderDetail(models.Model):
 class RecentSee(models.Model):
     goods_name = models.CharField(max_length=30)
     extra = models.CharField(max_length=20, null=True, blank=True)  # 预留
-    user = models.ForeignKey('UserInfo')
+    user = models.ForeignKey('UserInfo',related_name='user_recent_see')
 
     class Meta:
         db_table = 'recentsee'

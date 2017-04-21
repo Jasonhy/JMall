@@ -75,7 +75,7 @@
                     <dt></dt>
                     <dd class="detail">{{ good.goods_detail|safe }}</dd>
                     <div class="formtable">
-                        <form method="post">
+                        <form action="/comment{{ good.id }}/" method="post" style="display: none" class="form">
                             {% for comm in goods_comment %}
                                 <p>{{ comm.username }} {{ comm.comment_date }}</p>
                                 <dd>{{ comm.comment|safe }}</dd>
@@ -111,7 +111,7 @@
             $.extend({
                 tipsBox:function (options) {
                     options = $.extend({
-                        onj:null,
+                        obj:null,
                         str:"+1",
                         start_size:"30px",
                         end_size:"60px",
@@ -121,7 +121,7 @@
 
                         }
                     },options);
-                    $("body").append("<span class='num'>" + options.str + "</span>")
+                    $("body").append("<span class='num'>" + options.str + "</span>");
                     var box = $(".num");
                     var left = options.obj.offset().left + options.obj.width/2 + 190;
                     var top = options.obj.offset().top - options.obj.height - 200;
