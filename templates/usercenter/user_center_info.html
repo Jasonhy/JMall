@@ -4,10 +4,10 @@
     用户中心
 {% endblock %}
 {% block tab_info %}
-    <li><a href="{% url 'usercenter:user_center_info' %}" class="active">· 个人信息</a> </li>
+    <li><a href="{% url 'usercenter:user_center_info' %}" class="active">· 个人信息</a></li>
 {% endblock %}
 
-{% block content %}
+{% block user_message %}
     <div class="right_content clearfix">
         <form action="{% url 'usercenter:user_center_info' %}" method="post">
             <div class="info_con clearfix">
@@ -23,13 +23,14 @@
             </div>
         </form>
     </div>
-    <h3 class="common_title2">最近浏览</h3>
+
     <div class="has_view_list">
+        <h3 class="common_title2 see_history">最近浏览</h3>
         <ul class="goods_type_list clearfix">
             {% for i in recentsee %}
                 <li>
                     <a href="/detail/?goods_id={{ i.id }}"><img src="/{{ i.img_path }}"></a>
-                    <h4><a href="/detail/?goods_id={{ i.id }}">{{ i.goods_name }}</a> </h4>
+                    <h4><a href="/detail/?goods_id={{ i.id }}">{{ i.goods_name }}</a></h4>
                     <div class="operate">
                         <span class="price">¥ {{ i.goods_price }}</span>
                         <span class="unit">{{ i.goods_price }}/500g</span>
@@ -40,6 +41,43 @@
             {% endfor %}
         </ul>
     </div>
+{% endblock %}
+
+{% block content %}
+    {#        <div class="right_content clearfix">#}
+    {#            <form action="{% url 'usercenter:user_center_info' %}" method="post">#}
+    {#                <div class="info_con clearfix">#}
+    {#                    <h3 class="common_title2">基本信息</h3>#}
+    {#                    <ul class="user_info_list">#}
+    {#                        <li><span>用户名: </span>{{ user.username }}</li>#}
+    {#                        <li id="uphone"><span>联系方式: </span>{{ user.phone }}</li>#}
+    {#                        <li id="uaddr"><span>联系地址: </span>{{ user.addr }}#}
+    {#                            <div class="edit_btn" id="edit_btn">编辑</div>#}
+    {#                            <input class="edit_submit" type="submit" name="" value="提交">#}
+    {#                        </li>#}
+    {#                    </ul>#}
+    {#                </div>#}
+    {#            </form>#}
+    {#        </div>#}
+
+{#    <div class="has_view_list">#}
+{#        <h3 class="common_title2 see_history">最近浏览</h3>#}
+{#        <ul class="goods_type_list clearfix">#}
+{#            {% for i in recentsee %}#}
+{#                <li>#}
+{#                    <a href="/detail/?goods_id={{ i.id }}"><img src="/{{ i.img_path }}"></a>#}
+{#                    <h4><a href="/detail/?goods_id={{ i.id }}">{{ i.goods_name }}</a></h4>#}
+{#                    <div class="operate">#}
+{#                        <span class="price">¥ {{ i.goods_price }}</span>#}
+{#                        <span class="unit">{{ i.goods_price }}/500g</span>#}
+{#                        <a href="javascript:;" class="add_goods" title="加入购物车" value="{{ i.id }}"></a>#}
+{#                    </div>#}
+{#                </li>#}
+{##}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#    </div>#}
+
     <script type="text/javascript" src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
     <script type="text/javascript">
         $(function () {

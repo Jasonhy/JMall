@@ -63,5 +63,27 @@ def login(request,dic):
             return render(request, "register2login/login.html",{'error':{'name':'请输入用户名','password':'请输入密码'}})
 
 def changekw(request):
-    pass
+    '''
+    忘记密码
+    :param request:
+    :return:
+    '''
+    if request.method == 'GET':
+        return render(request,'register2login/changekw.html')
+    else:
+        username = request.POST.get("username",None)
+        password = request.POST.get("pwd",None)
+        email = request.POST.get('email',None)
+
+        if username and len(password) >= 6 and email:
+            user = UserInfo.objects.get(username=username)
+            if user.email == email:
+                n = hashlib.md5(password.encode('utf-8'))
+                user.password = n.hexdigest()
+                user.save()
+                return redirect('/login/')
+            else:
+                return render(request, 'register2login/changekw.html',{'error':{'email':'邮箱错误,请重新输入'}})
+
+        return render(request, 'register2login/changekw.html')
 

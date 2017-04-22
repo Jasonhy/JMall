@@ -29,10 +29,10 @@
                     <h1>全部商品分类</h1>
                     <span></span>
                     <ul class="subnav">
-                        <li>数码</li>
-                        <li>家电</li>
-                        <li>服饰</li>
-                        <li>图书</li>
+                        {% for item in message %}
+                            <li><a href="{% url 'goodslist:list' %}?order=id&&sort={{ item.sort.id }}" class="{{ item.sort.sort_class }}">{{ item.sort.sort_name }}</a> </li>
+                        {% endfor %}
+
                     </ul>
                 </div>
                 <ul class="navlist fl">

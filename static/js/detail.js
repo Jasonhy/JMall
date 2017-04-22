@@ -24,7 +24,7 @@ $(function () {
     }
 
     $('.num_show').change(function () {
-        $('.buy_btn').attr({href:$('.buy_btn').attr("href").split("?")[0] + '?id' + $('.add_card').attr('value')
+        $('.buy_btn').attr({href:$('.buy_btn').attr("href").split("?")[0] + '?id=' + $('.add_card').attr('value')
         + "&&count=" + $(".num_show").val()});
     });
 

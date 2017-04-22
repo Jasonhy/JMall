@@ -56,7 +56,7 @@
                 {% endfor %}
 
             </div>
-            <a class="goods_more fr" href="#">查看更多</a>
+            <a class="goods_more fr" href="{% url 'goodslist:list' %}?sort={{ item.sort.id }}">查看更多</a>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl"><img src="/{{ item.sort.sort_pic }}"></div>

@@ -1,0 +1,97 @@
+{% extends 'base/base_index.html' %}
+{% load static from staticfiles %}
+{% block title %}
+    全球购 - 商品列表
+{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb">
+        <a href="#">全部分类</a>
+        <span> > </span>
+        <a href="#">{{ good_list.good_sort.sort_name }}</a>
+    </div>
+    <div class="main_wrap clearfix">
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for new_goods in good_list.new_goods_list %}
+                        <li>
+                            <a href="/detail/?goods_id={{ new_goods.id }}"><img src="/{{ new_goods.img_path }}"></a>
+                            <h4><a href="/detail/?goods_id={{ new_goods.id }}">{{ new_goods.goods_name }}</a> </h4>
+                            <div class="price">¥{{ new_goods.goods_price }}</div>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+        <div class="r_wrap fr clearfix">
+            <div class="sort_bar">
+                <a href="{% url 'goodslist:list' %}?order=id&&sort={{ good_list.good_sort.id }}&&page={{ good_list.p_index }}" class="{{ good_list.active.id }}">默认</a>
+                <a href="{% url 'goodslist:list' %}?order=price&&sort={{ good_list.good_sort.id }}&&page={{ good_list.p_index }}" class="{{ good_lsit.active.price }}">价格</a>
+                <a href="{% url 'goodslist:list' %}?order=count&&sort={{ goodslist.goodsort.id }}&&page={{ goodslist.pindex }}" class="{{ good_list.active.count }}">人气</a>
+            </div>
+            <ul class="goods_type_list clearfix">
+                {% for order in good_list.order_list %}
+                    <li>
+                        <a href="/detail/?goods_id={{ order.id }}"><img src="/{{ order.img_path }}"></a>
+                        <h4><a href="/detail/?goods_id={{ order.id }}">{{ order.goods_name }}</a></h4>
+                        <div class="operate">
+                            <span class="price">¥ {{ order.goods_price }}</span>
+                            <span class="unit">{{ order.goods_price }} / 个</span>
+                            <a href="javascript:;" class="add_goods" title="加入购物车" value="{{ order.id }}"></a>
+                        </div>
+                    </li>
+                {% endfor %}
+
+            </ul>
+
+            <div class="pagenation">
+                <a href="#" id="toleft"> < 上一页</a>
+                {% for p in good_list.p_list %}
+                    <a href="{% url 'goodslist:list' %}?order={{ good_list.order_type }}&&sort={{ good_list.good_sort.id }}&&page={{ p }}" class="{% if p == good_list.p_index %}
+
+                    {% endif %}">{{ p }}</a>
+                {% endfor %}
+                <a href="#" id="toright"> 下一页 ></a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var ahref = $('.pagenation .active').attr('href');
+            var apage = ahref.split('page=');
+            var max = parseInt(($('#toright').prev('a').html()));
+            index = ahref.indexOf(apage[1]);
+
+            left = parseInt(apage[1]) - 1;
+            right = parseInt(apage[1]) + 1;
+
+            if (left <= 0){
+                left = 1;
+            }
+            if (right > max){
+                right = max - 1;
+            }
+
+            $('#toleft').attr({href:apage[0] + 'page=' + String(left)});
+            $('#toright').attr({href:apage[0] + 'page=' + String(right)});
+        })
+
+        $('.add_goods').click(function () {
+            thisgood = $(this).attr('value');
+            $.ajax({
+                url:'/addcart/',
+                type:'POST',
+                dataType:'JSON',
+                data:{'goods_name':thisgood,'buy_count':1}
+            }).done(function (data) {
+                $('#show_count').html(data.number);
+            }).fail(function () {
+                alert('服务器超时，请重试！');
+            });
+        })
+    </script>
+{% endblock %}

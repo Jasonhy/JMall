@@ -20,7 +20,7 @@
     <div class="breadcrumb">
         <a href="#">全部分类</a>
         <span>|</span>
-        <a href="#">{{ good_sort.sort_name }}</a>
+        <a href="{% url 'goodslist:list' %}?order=id&&sort={{goods_sort.id}}">{{ good_sort.sort_name }}</a>
         <span>|</span>
         <a href="#">商品详情</a>
     </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="total">总价: <em>{{ good.goods_price }} 元</em></div>
             <div class="operate_btn">
-                <a href="#" class="buy_btn">立即购买</a>
+                <a href="/place_order/" class="buy_btn">立即购买</a>
                 <a href="javascript:;" class="add_card" id="add_cart" value="{{ good.id }}">加入购物车</a>
             </div>
         </div>
@@ -57,7 +57,7 @@
                     {% for new_goods in new_goods_list %}
                         <li>
                             <a href="/detail/?goods_id={{ new_goods.id }}"><img src="/{{ new_goods.img_path }}"></a>
-                            <h4><a href="#">{{ new_goods.goods_name }}</a> </h4>
+                            <h4><a href="/detail/?goods_id={{ new_goods.id }}">{{ new_goods.goods_name }}</a> </h4>
                             <div class="price">¥ {{ new_goods.goods_price }}</div>
                         </li>
                     {% endfor %}

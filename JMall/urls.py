@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^', include('usercenter.urls',namespace='usercenter')),
     url(r'^', include('register2login.urls',namespace='register2login')),
     url(r'^', include('cart.urls',namespace='cart')),
+    url(r'^', include('goodslist.urls',namespace='goodslist')),
 ]

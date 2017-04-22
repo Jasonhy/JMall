@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'usercenter',
     'register2login',
     'cart',
+    'goodslist',
 ]
 
 MIDDLEWARE = [

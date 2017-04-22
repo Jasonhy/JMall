@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import *
+from django.core.urlresolvers import reverse
 from usercenter import der
 from index.models import *
-
+from datetime import datetime
+import time
 @der.login_yz
 @der.login_name
 def cart(request,dic):
@@ -39,7 +41,7 @@ def place_order(request,dic):
     cart_id = []
     if request.method == 'GET':
         count = request.GET.get('count',None)
-        good_id = request.GET.get('id',None)
+        good_id = int(request.GET.get('id',None))
         good_id = [good_id]
     else:
         count = request.POST.getlist('count',None)
@@ -77,5 +79,46 @@ def place_order(request,dic):
         'goods_amount':len(good_id),
         'all_total':sumprice,
         'cart_id':cart_id,
+        'freight':freight,
     })
     return render(request,'cart/place_order.html',dic)
+
+@der.login_yz
+@der.login_name
+def place_hander(request,dic):
+    '''
+    提交订单后,处理页面跳转到用户订单页
+    :param request:
+    :param dic:
+    :return:
+    '''
+    addr = request.POST.get('addr')
+    goods_count = request.POST.get('goods_count')
+    goods_id = request.POST.get('goods_id')  # 如果是立即购买的获取物品id
+    cart_id = request.POST.get('cart_id')   # 如果是购物车结算的获取购物车id
+
+    orders = Orders()
+    orders.order_time = datetime.now()
+    orders.order_number = str(int(time.time()))
+    orders.user_order_id = dic['user'].id
+    orders.addr = int(addr)
+    orders.save()
+    if cart_id and cart_id[0]:
+        for i in cart_id:
+            cart = Cart.objects.get(id=int(i))
+            goods = Goods.objects.get(id=int(cart.goods_name))
+            order_detail = orders.order_detail.create(goods_name=goods.goods_name,
+                                                      goods_price=goods.goods_price,
+                                                      buy_count=int(goods_count),
+                                                      goods_id=goods_id)
+            order_detail.save()
+            cart.is_delete=True
+            cart.save()
+    else:
+        goods = Goods.objects.get(id=int(goods_id))
+        orders.order_detail.create(goods_name=goods.goods_name,
+                                   goods_price=goods.goods_price,
+                                   buy_count=goods_count,
+                                   goods_id=goods_id)
+    return redirect(reverse('usercenter:user_center_order'))
+

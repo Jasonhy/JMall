@@ -11,9 +11,9 @@ def user_center_info(request,dic):
     if request.method == "GET":
         recentsee = dic['user'].user_recent_see.all()
         goods_list = []
-        for i in recentsee:
-            # goods_list.append(Goods.objects.get(id=int(i.goods_name)))
-            goods_list.append(Goods.objects.get(id=i.id))
+        if recentsee:
+            for i in recentsee:
+                goods_list.append(Goods.objects.get(id=int(i.goods_name)))
         recv = goods_list[-5:]
         recv.reverse()
         dic = dict(dic,**{"recentsee":recv})
@@ -115,7 +115,7 @@ def user_center_order(request,dic):
         elif p_index == 1:
             p_list = p_list[0:p_index+2]
         else:
-            p_list = p_list[p_index:p_index+1]
+            p_list = p_list[p_index-2:p_index+1]
 
     orders = []
     for order in order_list2:

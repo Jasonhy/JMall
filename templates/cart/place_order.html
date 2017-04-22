@@ -1,2 +1,111 @@
 {% extends 'base/base_user.html' %}
 {% load static from staticfiles %}
+{% block title %}
+    全球购 - 提交订单
+{% endblock %}
+{% block option %}
+    提交订单
+{% endblock %}
+{% block user_message %}
+
+{% endblock %}
+
+{% block content %}
+    <h3 class="common_title">确认收货地址</h3>
+    <form action="{% url 'cart:place_hander' %}" method="post" id="myform">
+        <div class="common_list_con clearfix">
+            <dl>
+                <dt>寄送到: </dt>
+                {% for addr in addr_list %}
+                    <dd><input id="radio" type="radio" name="addr" value="{{ addr.id }}" {% if addr.default_addr == True %}
+                        checked="true"
+                    {% endif %}>
+                        {{ addr.province }}{{ addr.city }}{{ addr.dis }}{{ addr.detail_addr }}{{ addr.address }}(收)
+                        {% for ph in addr.phone %}
+                            {% if forloop.counter <= 3 or forloop.counter > 7 %}
+                                {{ ph }}
+                                {% else %}*
+                            {% endif %}
+                        {% endfor %}
+
+                    </dd>
+                {% endfor %}
+            </dl>
+            <a href="{% url 'usercenter:user_center_site' %}" class="edit_site">编辑收货地址</a>
+        </div>
+        <h3 class="common_title">支付方式</h3>
+        <div class="common_list_con clearfix">
+            <div class="pay_style_con clearfix">
+                <input type="radio" name="pay_style" checked="checked">
+                <label class="crah">货到付款</label>
+                <input type="radio" name="pay_style">
+                <label class="weixin">微信支付</label>
+                <input type="radio" name="pay_style">
+                <label class="zhifubao"></label>
+                <input type="radio" name="pay_style">
+                <label class="bank">银行卡支付</label>
+            </div>
+        </div>
+        <h3 class="common_title">商品列表</h3>
+        <div class="common_list_con clearfix">
+            <ul class="goods_list_th clearfix">
+                <li class="col01">商品名称</li>
+                <li class="col02">商品单位</li>
+                <li class="col03">商品价格</li>
+                <li class="col04">数量</li>
+                <li class="col05">小计</li>
+            </ul>
+            {% for order in order_list %}
+                <input type="hidden" value="{{ order.cart_id }}" name="cart_id">
+                <input type="hidden" value="{{ order.goods_count }}" name="goods_count">
+                <input type="hidden" value="{{ order.goods.id }}" name="goods_id">
+                <ul class="goods_list_td clearfix">
+                    <li class="col01">{{ order.count }}</li>
+                    <li class="col02"><img src="/{{ order.goods.img_path }}"></li>
+                    <li class="col03">{{ order.goods.goods_name }}</li>
+                    <li class="col04">1个</li>
+                    <li class="col05">{{ order.goods.goods_price }}</li>
+                    <li class="col06">{{ order.goods_count }}</li>
+                    <li class="col07">{{ order.sumtotal }}元</li>
+                </ul>
+            {% endfor %}
+
+        </div>
+        <div class="common_title">总金额结算</div>
+        <div class="common_list_con">
+            <div class="settle_con">
+                <div class="total_goods_count">共<em>{{ goods_amount }}</em>件商品,总金额<b>{{ all_total }}元</b></div>
+                <div class="transit">运费: <b>{{ freight }}元</b></div>
+                <div class="total_pay">实付款: <b>{{ all_price }}元</b></div>
+            </div>
+        </div>
+        <div class="order_submit clearfix">
+            <input type="submit" name="" value="提交订单" id="order_btn" style="height: 40px;width: 160px;float: right;background-color: #47aa34;border: 0px;color:#fff;font-size: 16px;">
+        </div>
+    </form>
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
+    <script type="text/javascript">
+        $('#radio').click(function () {
+            $(this).attr('name','addr').siblings('#radio').attr('name','')
+        })
+
+        $('#myform').submit(function () {
+            flag = false;
+            if ($('.common_list_con dl dd input').length == 0){
+                flag = false;
+            }else {
+                $('.common_list_con dl dd input').each(function () {
+                    if ($(this).prop('checked')){
+                        flag = true;
+                    }
+                })
+            }
+            if (flag == true){
+                return true;
+            }else {
+                alert('地址未选择');
+                return false;
+            }
+        })
+    </script>
+{% endblock %}

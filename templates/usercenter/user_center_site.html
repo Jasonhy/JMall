@@ -7,9 +7,9 @@
     <li><a href="{% url 'usercenter:user_center_site' %}" class="active">. 收货地址</a> </li>
 {% endblock %}
 
-{% block content %}
-    <div class="right_content clearfix">
-        <h3 class="common_title2>">收货地址</h3>
+{% block user_message %}
+<div class="right_content clearfix">
+        <h3 class="common_title2>" style="font-size: 16px;margin-bottom: 10px">收货地址</h3>
         <div class="site_con">
             <dl id="thedl">
                 {% for i in addr_info %}
@@ -60,6 +60,9 @@
             </form>
         </div>
     </div>
+{% endblock %}
+{% block content %}
+
 
     <script type="text/javascript" src="{% static 'js/jquery-3.2.0.min.js' %}"></script>
     <script type="text/javascript">
